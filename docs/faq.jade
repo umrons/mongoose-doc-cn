@@ -16,17 +16,16 @@ block content
   :markdown
     ## FAQ
 
-    **Q**. Why don't my changes to arrays get saved when I update an element
-    directly?
+    **Q**. 当我直接更新数组元素时​​，为什么没有保存更改？
 
     ```javascript
     doc.array[3] = 'changed';
     doc.save();
     ```
 
-    **A**. Mongoose doesn't create getters/setters for array indexes; without
-    them mongoose never gets notified of the change and so doesn't know to
-    persist the new value. The work-around is to use
+    **A**. Mongoose 不为数组索引创建 getter / setter; 
+    由于没有它们，mongoose 不会收到有关更改的通知，因此不知道是否使用新值。
+    解决办法是使用 
     [MongooseArray#set](./api.html#types_array_MongooseArray.set) available
     in **Mongoose >= 3.2.0**.
 
@@ -43,12 +42,11 @@ block content
 
     <hr id="unique-doesnt-work" />
 
-    **Q**. I declared a schema property as `unique` but I can still save
-    duplicates. What gives?
+    **Q**. 我声明了一个 scheme 属性 `unique`，但我仍然可以保存重复项。这是为什么？
 
-    **A**. Mongoose doesn't handle `unique` on its own: `{ name: { type: String, unique: true } }`
-    is just a shorthand for creating a [MongoDB unique index on `name`](https://docs.mongodb.com/manual/core/index-unique/).
-    For example, if MongoDB doesn't already have a unique index on `name`, the below code will not error despite the fact that `unique` is true.
+    **A**. Mongoose 本身不能处理 `unique`，`{ name: { type: String, unique: true } }`
+    只是创建 [MongoDB unique index on `name`](https://docs.mongodb.com/manual/core/index-unique/) 的简写。
+    例如，如果 MongoDB 上还没有唯一索引 `name`, 尽管设置了 `unique` 为 true，下面的代码也不会出错
 
     ```javascript
     var schema = new mongoose.Schema({
@@ -61,7 +59,7 @@ block content
     });
     ```
 
-    However, if you wait for the index to build using the `Model.on('index')` event, attempts to save duplicates will correctly error.
+    但是，如果你在 `Model.on('index')` 事件构建索引完成之后，保存重复项将抛出错误。
 
     ```javascript
     var schema = new mongoose.Schema({
@@ -87,12 +85,9 @@ block content
     });
     ```
 
-    MongoDB persists indexes, so you only need to rebuild indexes if you're starting
-    with a fresh database or you ran `db.dropDatabase()`. In a production environment,
-    you should [create your indexes using the MongoDB shell])(https://docs.mongodb.com/manual/reference/method/db.collection.createIndex/)
-    rather than relying on mongoose to do it for you. The `unique` option for schemas is
-    convenient for development and documentation, but mongoose is *not* an index management solution.
-
+    MongoDB持久保存索引，因此如果您从新数据库开始或运行，则只需要重建索引db.dropDatabase()。
+    在生产环境中，您应该[使用MongoDB shell创建索引]）（https://docs.mongodb.com/manual/reference/method/db.collection.createIndex/）而不是依赖于 mongoose 来实现它您。
+    
     <hr id="nested-properties" />
 
     **Q**. When I have a nested property in a schema, mongoose adds empty objects by default. Why?
